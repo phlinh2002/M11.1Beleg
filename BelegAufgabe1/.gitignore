@@ -1,0 +1,30 @@
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+*.cache
+*.db
+*.opendb
+*.VC.db
+
+# Build files
+Debug/
+Release/
+*.obj
+*.exe
+*.dll
+*.pdb
+*.lib
+*.idb
+
+# Logs and others
+*.log
+*.tmp
+*.bak
+*.swp
+
+# IDE settings
+*.code-workspace
+.vscode/
+.idea/
