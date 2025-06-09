@@ -1,7 +1,6 @@
 #include <vector>
 #include <omp.h>
 
-// alpha ist Kontrastfaktor (meist > 0)
 // beta ist Helligkeitsoffset (kann negativ oder positiv sein)
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
     std::vector<unsigned char>& output,
