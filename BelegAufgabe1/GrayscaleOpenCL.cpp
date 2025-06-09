@@ -1,6 +1,7 @@
 ﻿#include <CL/cl.h>
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 const char* kernelSource = R"(
 __kernel void rgb_to_grayscale(__global const uchar* inputImage,
@@ -18,15 +19,14 @@ __kernel void rgb_to_grayscale(__global const uchar* inputImage,
         uchar b = inputImage[idx + 2];
         outputImage[outIdx] = (uchar)(0.21f * r + 0.72f * g + 0.07f * b);
 
-        // Begrenzte Ausgabe (z. B. alle 64 Pixel)
-        if ((x % 64 == 0) && (y % 64 == 0)) {
-            printf("Work-Item (%d, %d) verarbeitet Pixel %d\n", x, y, outIdx);
-        }
+        
     }
 }
 )";
 
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray) {
+    printf("-----Grayscale - OpenCL-----\n");
+	auto start = std::chrono::high_resolution_clock::now();
     //Plattform (AMD/Intel/NVIDIA)  & Gerät auswählen
     cl_int err;
 
@@ -88,5 +88,8 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
     clReleaseCommandQueue(queue);
     clReleaseContext(context);
 
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> duration = end - start;
+	std::cout << "Laufzeit convertToGrayscale_OpenCL: " << duration.count() << " ms\n";
     return true;
 }

@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 const char* brightnessKernel = R"(
 __kernel void adjust_brightness(__global const uchar* input,
@@ -9,9 +10,6 @@ __kernel void adjust_brightness(__global const uchar* input,
                                 int beta,
                                 int totalPixels) {
     int i = get_global_id(0);
-    if(i=0){
-        printf("-----Helligkeit - OpenCL-----\n");
-    }
     if (i < totalPixels) {
         int val = (int)(input[i]) + beta;
         if (val > 255) val = 255;
@@ -21,13 +19,15 @@ __kernel void adjust_brightness(__global const uchar* input,
         // BEGRENZT, um nicht tausende Zeilen zu erzeugen
         if (i % 10000 == 0) {
             printf("Work-Item %d bearbeitet Pixel %d\n", i, i);
-        }
     }
+}
 }
 )";
 
 bool adjustBrightness_OpenCL(const std::vector<uchar>& inputColor, std::vector<uchar>& outputGray,
     int beta) {
+    printf("-----Helligkeit - OpenCL-----\n");
+    auto start = std::chrono::high_resolution_clock::now();
     cl_int err;
 
     cl_platform_id platform;
@@ -75,6 +75,10 @@ bool adjustBrightness_OpenCL(const std::vector<uchar>& inputColor, std::vector<u
     clReleaseProgram(program);
     clReleaseCommandQueue(queue);
     clReleaseContext(context);
+
+    auto ende = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> dauer = ende - start;
+    std::cout << "Laufzeit adjustBrightness_OpenCL: " << dauer.count() << " ms\n";
 
     return true;
 }

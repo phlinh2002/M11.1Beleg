@@ -37,7 +37,11 @@ int main() {
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
+    cv::imwrite(outputFolder + "/grayscale_openmp.jpg", matGrayOpenMP);
 
+	//Kommentieren wegen der einzelnen Ausführung der Aufgaben, beim Ausführen der Aufgaben einzeln auskommentieren
+    
+    /*
     // ===== Graustufen OpenCL =====
     std::vector<unsigned char> grayOpenCL;
     if (!convertToGrayscale_OpenCL(rgbData, width, height, grayOpenCL)) {
@@ -45,13 +49,16 @@ int main() {
         return -1;
     }
     cv::Mat matGrayOpenCL(height, width, CV_8UC1, grayOpenCL.data());
+    cv::imwrite(outputFolder + "/grayscale_opencl.jpg", matGrayOpenCL);
 
-    int beta = 50;      
+    int beta = 50;
     
     // ===== Helligkeit OpenMP =====
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
     cv::Mat matBrightOpenMP(height, width, CV_8UC3, brightOpenMP.data());
+    cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
+    
     
     // ===== Helligkeit OpenCL =====
     std::vector<unsigned char> brightOpenCL;
@@ -60,12 +67,9 @@ int main() {
         return -1;
     }
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
+    cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
+    */
     
-    // ===== Bilder speichern =====
-    cv::imwrite(outputFolder + "/grayscale_openmp.jpg", matGrayOpenMP);
-    cv::imwrite(outputFolder + "/grayscale_opencl.jpg", matGrayOpenCL);
-    cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
-	cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
 
     cv::waitKey(0);
     return 0;
