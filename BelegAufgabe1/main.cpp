@@ -37,7 +37,7 @@ int main() {
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
-
+    /*
     // ===== Graustufen OpenCL =====
     std::vector<unsigned char> grayOpenCL;
     if (!convertToGrayscale_OpenCL(rgbData, width, height, grayOpenCL)) {
@@ -72,7 +72,7 @@ int main() {
     cv::imshow("Grayscale OpenMP", matGrayOpenMP);
     cv::imshow("Grayscale OpenCL", matGrayOpenCL);
     cv::imshow("Brightness Adjusted OpenMP", matBrightOpenMP);
-    cv::imshow("Brightness Adjusted OpenCL", matBrightOpenCL);
+    cv::imshow("Brightness Adjusted OpenCL", matBrightOpenCL);*/
 
     cv::waitKey(0);
     return 0;
