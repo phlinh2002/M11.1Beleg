@@ -27,6 +27,7 @@ __kernel void rgb_to_grayscale(__global const uchar* inputImage,
 )";
 
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray) {
+    //Plattform (AMD/Intel/NVIDIA)  & Gerät auswählen
     cl_int err;
 
     cl_platform_id platform;
@@ -37,11 +38,13 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
         std::cerr << "OpenCL Plattform/Device Fehler\n";
         return false;
     }
-
+    
+	// Kontext und Kommando-Warteschlange erstellen
     cl_context context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, &err);
     cl_command_queue_properties props[] = { 0 };
     cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, props, &err);
 
+	//Progemm aus Quellcode erstellen und kompilieren
     cl_program program = clCreateProgramWithSource(context, 1, &kernelSource, nullptr, &err);
     err = clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
     if (err != CL_SUCCESS) {
@@ -53,18 +56,21 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
 
     cl_kernel kernel = clCreateKernel(program, "rgb_to_grayscale", &err);
 
+	//Speicher für Eingabe- (RGB Daten von CPU in GPU kopiert) und Ausgabebuffer (Graustufenbild auf der GPU reserviert) erstellen
     size_t imageSize = inputRGB.size();
     size_t graySize = width * height;
 
     cl_mem inputBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, imageSize, const_cast<unsigned char*>(inputRGB.data()), &err);
     cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, graySize, nullptr, &err);
 
+	// Kernel-Argumente setzen
     clSetKernelArg(kernel, 0, sizeof(cl_mem), &inputBuffer);
     clSetKernelArg(kernel, 1, sizeof(cl_mem), &outputBuffer);
     clSetKernelArg(kernel, 2, sizeof(int), &width);
     clSetKernelArg(kernel, 3, sizeof(int), &height);
 
-    size_t globalSize[2] = { (size_t)width, (size_t)height };
+	// Kernel ausführen 
+    size_t globalSize[2] = { (size_t)width, (size_t)height }; //Workitems in 2d
     err = clEnqueueNDRangeKernel(queue, kernel, 2, nullptr, globalSize, nullptr, 0, nullptr, nullptr);
     if (err != CL_SUCCESS) {
         std::cerr << "Kernel Ausführung Fehler\n";
@@ -74,6 +80,7 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
     outputGray.resize(graySize);
     clEnqueueReadBuffer(queue, outputBuffer, CL_TRUE, 0, graySize, outputGray.data(), 0, nullptr, nullptr);
 
+	// Ressourcen freigeben
     clReleaseMemObject(inputBuffer);
     clReleaseMemObject(outputBuffer);
     clReleaseKernel(kernel);
