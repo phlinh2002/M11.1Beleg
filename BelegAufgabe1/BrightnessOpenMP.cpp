@@ -1,22 +1,45 @@
 #include <vector>
 #include <omp.h>
+#include <iostream>
 
-// beta ist Helligkeitsoffset (kann negativ oder positiv sein)
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
     std::vector<unsigned char>& output,
-     int beta)
+    int beta)
 {
     int totalPixels = input.size();
     output.resize(totalPixels);
 
-#pragma omp parallel for
-    for (int i = 0; i < totalPixels; ++i) {
-        int value = static_cast<int>(input[i]) + beta;
+    #pragma omp parallel
+    {
+        // Ausgabe der Gesamtzahl der Threads, nur einmal durch einen Thread
+    #pragma omp single
+        {
+            int nThreads = omp_get_num_threads();
+            std::cout << "Anzahl der verwendeten Threads: " << nThreads << std::endl;
+        }
 
-        // Clamping auf [0,255]
-        if (value > 255) value = 255;
-        if (value < 0) value = 0;
+        int tid = omp_get_thread_num();
+        int nThreads = omp_get_num_threads();
 
-        output[i] = static_cast<unsigned char>(value);
+        int chunkSize = totalPixels / nThreads;
+        int startIdx = tid * chunkSize;
+        int endIdx = (tid == nThreads - 1) ? totalPixels : startIdx + chunkSize;
+
+        // Einmalige Ausgabe pro Thread
+    #pragma omp critical
+        {
+            std::cout << "Thread " << tid << " bearbeitet Pixel von " << startIdx
+                << " bis " << endIdx - 1
+                << " (Anzahl: " << (endIdx - startIdx) << ")\n";
+        }
+
+        for (int i = startIdx; i < endIdx; ++i) {
+            int value = static_cast<int>(input[i]) + beta;
+
+            if (value > 255) value = 255;
+            if (value < 0) value = 0;
+
+            output[i] = static_cast<unsigned char>(value);
+        }
     }
 }

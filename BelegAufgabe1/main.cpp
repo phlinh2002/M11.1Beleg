@@ -2,8 +2,6 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
-//Bis jetzt nur Grayscale, Helligkeit funktioniert noch nicht, weil ich möchte kein Konstrast verändert sondern nur Helligkeit 
-// Externe Funktionen
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,  int beta);
@@ -37,7 +35,7 @@ int main() {
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
-    /*
+
     // ===== Graustufen OpenCL =====
     std::vector<unsigned char> grayOpenCL;
     if (!convertToGrayscale_OpenCL(rgbData, width, height, grayOpenCL)) {
@@ -52,7 +50,7 @@ int main() {
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
     cv::Mat matBrightOpenMP(height, width, CV_8UC3, brightOpenMP.data());
-
+    
     // ===== Helligkeit OpenCL =====
     std::vector<unsigned char> brightOpenCL;
     if (!adjustBrightness_OpenCL(rgbData, brightOpenCL, beta)) {
@@ -66,13 +64,6 @@ int main() {
     cv::imwrite(outputFolder + "/grayscale_opencl.jpg", matGrayOpenCL);
     cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
     cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
-
-    // ===== Bilder anzeigen =====
-    cv::imshow("Original", img);
-    cv::imshow("Grayscale OpenMP", matGrayOpenMP);
-    cv::imshow("Grayscale OpenCL", matGrayOpenCL);
-    cv::imshow("Brightness Adjusted OpenMP", matBrightOpenMP);
-    cv::imshow("Brightness Adjusted OpenCL", matBrightOpenCL);*/
 
     cv::waitKey(0);
     return 0;
