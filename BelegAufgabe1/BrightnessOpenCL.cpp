@@ -14,6 +14,11 @@ __kernel void adjust_brightness(__global const uchar* input,
         if (val > 255) val = 255;
         if (val < 0) val = 0;
         output[i] = (uchar)(val);
+
+        // BEGRENZT, um nicht tausende Zeilen zu erzeugen
+        if (i % 10000 == 0) {
+            printf("Work-Item %d bearbeitet Pixel %d\n", i, i);
+        }
     }
 }
 )";
