@@ -2,6 +2,8 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
+//!!!!!Aufgaben einzelne ausführen wegen dem Ausgaben des Threads/Workloads
+
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,  int beta);

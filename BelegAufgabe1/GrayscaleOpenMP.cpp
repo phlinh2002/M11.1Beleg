@@ -3,8 +3,10 @@
 #include <iostream>
 
 void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray) {
+	printf("-----Graustufen - OpenMP-----\n");
 	int totalPixels = width * height;
 	outputGray.resize(totalPixels);
+	
 
 	#pragma omp parallel
 	{

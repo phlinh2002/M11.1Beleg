@@ -9,6 +9,9 @@ __kernel void adjust_brightness(__global const uchar* input,
                                 int beta,
                                 int totalPixels) {
     int i = get_global_id(0);
+    if(i=0){
+        printf("-----Helligkeit - OpenCL-----\n");
+    }
     if (i < totalPixels) {
         int val = (int)(input[i]) + beta;
         if (val > 255) val = 255;

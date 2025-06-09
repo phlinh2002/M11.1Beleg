@@ -6,6 +6,7 @@ void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
     std::vector<unsigned char>& output,
     int beta)
 {
+	printf("-----Helligkeit - OpenMP\n-----");
     int totalPixels = input.size();
     output.resize(totalPixels);
 

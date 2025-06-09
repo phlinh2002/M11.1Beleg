@@ -11,6 +11,7 @@ __kernel void rgb_to_grayscale(__global const uchar* inputImage,
     int idx = (y * width + x) * 3;
     int outIdx = y * width + x;
 
+
     if (x < width && y < height) {
         uchar r = inputImage[idx];
         uchar g = inputImage[idx + 1];
