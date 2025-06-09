@@ -10,6 +10,7 @@ bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::ve
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,int beta);
 
 int main() {
+    std::string outputFolder = "./images";
     std::string imagePath = "\images\\1.kitten_small.jpg";
     cv::Mat img = cv::imread(imagePath);
     if (img.empty()) {
@@ -59,6 +60,12 @@ int main() {
         return -1;
     }
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
+
+    // ===== Bilder speichern =====
+    cv::imwrite(outputFolder + "/grayscale_openmp.jpg", matGrayOpenMP);
+    cv::imwrite(outputFolder + "/grayscale_opencl.jpg", matGrayOpenCL);
+    cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
+    cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
 
     // ===== Bilder anzeigen =====
     cv::imshow("Original", img);
