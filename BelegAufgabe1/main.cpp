@@ -44,8 +44,8 @@ int main() {
     }
     cv::Mat matGrayOpenCL(height, width, CV_8UC1, grayOpenCL.data());
 
-    int beta = 50;      // Helligkeitsversatz
-
+    int beta = 50;      
+    
     // ===== Helligkeit OpenMP =====
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
@@ -58,12 +58,12 @@ int main() {
         return -1;
     }
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
-
+    
     // ===== Bilder speichern =====
     cv::imwrite(outputFolder + "/grayscale_openmp.jpg", matGrayOpenMP);
     cv::imwrite(outputFolder + "/grayscale_opencl.jpg", matGrayOpenCL);
     cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
-    cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
+	cv::imwrite(outputFolder + "/brightness_opencl.jpg", matBrightOpenCL);
 
     cv::waitKey(0);
     return 0;

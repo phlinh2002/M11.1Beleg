@@ -1,4 +1,4 @@
-#include <CL/cl.h>
+﻿#include <CL/cl.h>
 #include <vector>
 #include <iostream>
 
@@ -10,11 +10,17 @@ __kernel void rgb_to_grayscale(__global const uchar* inputImage,
     int y = get_global_id(1);
     int idx = (y * width + x) * 3;
     int outIdx = y * width + x;
+
     if (x < width && y < height) {
         uchar r = inputImage[idx];
         uchar g = inputImage[idx + 1];
         uchar b = inputImage[idx + 2];
         outputImage[outIdx] = (uchar)(0.21f * r + 0.72f * g + 0.07f * b);
+
+        // Begrenzte Ausgabe (z. B. alle 64 Pixel)
+        if ((x % 64 == 0) && (y % 64 == 0)) {
+            printf("Work-Item (%d, %d) verarbeitet Pixel %d\n", x, y, outIdx);
+        }
     }
 }
 )";
@@ -60,7 +66,7 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
     size_t globalSize[2] = { (size_t)width, (size_t)height };
     err = clEnqueueNDRangeKernel(queue, kernel, 2, nullptr, globalSize, nullptr, 0, nullptr, nullptr);
     if (err != CL_SUCCESS) {
-        std::cerr << "Kernel Ausf�hrung Fehler\n";
+        std::cerr << "Kernel Ausführung Fehler\n";
         return false;
     }
 
