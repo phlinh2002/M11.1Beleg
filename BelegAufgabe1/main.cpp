@@ -10,7 +10,7 @@ bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::ve
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,int beta);
 
 int main() {
-    std::string imagePath = "C:\\Users\\DELL\\source\\repos\\Programmierkonzepte\\images\\animal\\1.kitten_small.jpg";
+    std::string imagePath = "\images\\1.kitten_small.jpg";
     cv::Mat img = cv::imread(imagePath);
     if (img.empty()) {
         std::cerr << "Fehler: Bild konnte nicht geladen werden.\n";
