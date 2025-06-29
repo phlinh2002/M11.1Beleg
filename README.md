@@ -1,8 +1,9 @@
 # M11.1Beleg
 Aufgabe 1 von dem Modul M11.1 Programmierkonzepte und Algorithmen
+Authorin: Hoai Linh Pham
 # Bildverarbeitung mit OpenMP und OpenCL
 
-## 📄 Beschreibung
+## Beschreibung
 
 Dieses Projekt beschäftigt sich mit grundlegender **Bildverarbeitung** unter Verwendung von **OpenMP** und **OpenCL**.  
 Konkret werden folgende Operationen implementiert:
@@ -11,7 +12,7 @@ Konkret werden folgende Operationen implementiert:
 - **Grayscale** (Umwandlung in Graustufen)
 - **Helligkeit**
 
-### 🧵 Parallelisierung
+### Parallelisierung
 
 Zur Beschleunigung der Bildverarbeitung kommen zwei Technologien zum Einsatz:
 
@@ -20,10 +21,11 @@ Zur Beschleunigung der Bildverarbeitung kommen zwei Technologien zum Einsatz:
 
 ---
 
-## ⚙️ Technologien
+##  Technologien
 - C / C++
 - OpenMP
 - OpenCL
+- OpenCV (zum Vergleichen)
 - Bildformate: z. B. PPM, PNG (je nach Implementierung)
 
 ---
