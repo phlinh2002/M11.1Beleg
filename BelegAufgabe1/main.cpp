@@ -13,7 +13,7 @@ void adjustBrightness_OpenCV(const cv::Mat& inputImage, cv::Mat& outputImage, in
 
 int main() {
     std::string outputFolder = "./images";
-    std::string imagePath = "\images\\1.kitten_small.jpg";
+    std::string imagePath = "\images\\4.nature_mega.jpeg";
     cv::Mat img = cv::imread(imagePath);
     if (img.empty()) {
         std::cerr << "Fehler: Bild konnte nicht geladen werden.\n";
@@ -45,7 +45,7 @@ int main() {
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
-    cv::imwrite(outputFolder + "/grayscale_openmp.jpg", matGrayOpenMP);
+    cv::imwrite(outputFolder + "/nature_grayscale_openmp.jpg", matGrayOpenMP);
 
 
     // ===== Graustufen OpenCL =====
@@ -55,12 +55,12 @@ int main() {
         return -1;
     }
     cv::Mat matGrayOpenCL(height, width, CV_8UC1, grayOpenCL.data());
-    cv::imwrite(outputFolder + "/grayscale_opencl_nature.jpg", matGrayOpenCL);
+    cv::imwrite(outputFolder + "/nature_grayscale_opencl.jpg", matGrayOpenCL);
 
     // ===== Graustufen OpenCV =====
     cv::Mat grayOpenCV;
     convertToGrayscale_OpenCV(imgRGB, grayOpenCV);
-    cv::imwrite(outputFolder + "/grayscale_opencv.jpg", grayOpenCV);
+    cv::imwrite(outputFolder + "/nature_grayscale_opencv.jpg", grayOpenCV);
 
     int beta = 50;
     
@@ -68,7 +68,7 @@ int main() {
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
     cv::Mat matBrightOpenMP(height, width, CV_8UC3, brightOpenMP.data());
-    cv::imwrite(outputFolder + "/brightness_openmp.jpg", matBrightOpenMP);
+    cv::imwrite(outputFolder + "/nature_brightness_openmp.jpg", matBrightOpenMP);
     
     
     // ===== Helligkeit OpenCL =====
@@ -78,14 +78,14 @@ int main() {
         return -1;
     }
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
-    cv::imwrite(outputFolder + "/brightness_opencl_nature.jpg", matBrightOpenCL);
+    cv::imwrite(outputFolder + "/nature_brightness_opencl.jpg", matBrightOpenCL);
     
 
 
 	// ===== Helligkeit OpenCV =====
 	cv::Mat brightOpenCV;
 	adjustBrightness_OpenCV(imgRGB, brightOpenCV, beta);
-	cv::imwrite(outputFolder + "/nature_brightness_opencv_nature.jpg", brightOpenCV);
+	cv::imwrite(outputFolder + "/nature_brightness_opencv.jpg", brightOpenCV);
     
 
     cv::waitKey(0);
