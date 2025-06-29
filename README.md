@@ -1,6 +1,6 @@
 # M11.1Beleg
 Aufgabe 1 von dem Modul M11.1 Programmierkonzepte und Algorithmen
-Authorin: Hoai Linh Pham
+von Hoai Linh Pham
 # Bildverarbeitung mit OpenMP und OpenCL
 
 ## Beschreibung
