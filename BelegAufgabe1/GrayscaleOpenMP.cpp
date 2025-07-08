@@ -22,14 +22,7 @@ void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int w
 			std::cout << "Anzahl der Threads: " << nThreads << std::endl;
 		}
 
-		// Pixel pro Thread (ganzzahliger Anteil)
-		int chunkSize = totalPixels / nThreads;
-
-		// Startindex
-		int startIdx = tid * chunkSize;
-
-		// Endindex (letzter Thread nimmt auch Rest mit)
-		int endIdx = (tid == nThreads - 1) ? totalPixels : startIdx + chunkSize;
+	
 
 		// Ausgabe des Bereichs pro Thread (einmalig)
 		/*
@@ -41,7 +34,7 @@ void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int w
 		
 
         // Jetzt die Pixel im Bereich verarbeiten
-		for (int i = startIdx; i < endIdx; ++i) {
+		for (int i = 0; i < totalPixels; ++i) {
         
 			int idx = i * 3;
 			unsigned char r = inputRGB[idx];

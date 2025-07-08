@@ -27,9 +27,7 @@ void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
         int tid = omp_get_thread_num();
         int nThreads = omp_get_num_threads();
 
-        int chunkSize = totalPixels / nThreads;
-        int startIdx = tid * chunkSize;
-        int endIdx = (tid == nThreads - 1) ? totalPixels : startIdx + chunkSize;
+     
 
         // Einmalige Ausgabe pro Thread
         /*
@@ -41,7 +39,7 @@ void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
         }
         */
 
-        for (int i = startIdx; i < endIdx; ++i) {
+        for (int i = 0; i < totalPixels; ++i) {
             int value = static_cast<int>(input[i]) + beta;
 
             if (value > 255) value = 255;
