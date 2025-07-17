@@ -198,6 +198,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BenchmarkManager.cpp" />
     <ClCompile Include="BrightnessOpenCL.cpp" />
     <ClCompile Include="BrightnessOpenMP.cpp" />
     <ClCompile Include="GrayscaleOpenMP.cpp" />
@@ -206,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opencv.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BenchmarkManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

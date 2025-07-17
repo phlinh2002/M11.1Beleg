@@ -1,15 +1,11 @@
 #include <vector>
 #include <omp.h>
 #include <iostream>
-#include <chrono>
 
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
     std::vector<unsigned char>& output,
     int beta)
 {
-     printf("-----Helligkeit - OpenMP-----\n");
-    auto start = std::chrono::high_resolution_clock::now();
-
     int totalPixels = input.size();
     output.resize(totalPixels);
 
@@ -49,7 +45,4 @@ void adjustBrightness_OpenMP(const std::vector<unsigned char>& input,
         }
     }
 
-    auto ende = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> dauer = ende - start;
-    std::cout << "Laufzeit adjustBrightness_OpenMP: " << dauer.count() << " ms\n";
 }

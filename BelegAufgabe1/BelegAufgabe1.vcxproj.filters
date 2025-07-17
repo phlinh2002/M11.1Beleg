@@ -7,5 +7,9 @@
     <ClCompile Include="GrayscaleOpenCL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opencv.cpp" />
+    <ClCompile Include="BenchmarkManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BenchmarkManager.h" />
   </ItemGroup>
 </Project>

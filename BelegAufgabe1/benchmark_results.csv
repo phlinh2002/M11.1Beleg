@@ -1,0 +1,7 @@
+Method,Time(ms)
+Grayscale OpenMP,31.8226
+Grayscale OpenCL,170.736
+Grayscale OpenCV,19.4884
+Brightness OpenMP,125.59
+Brightness OpenCL,11.4403
+Brightness OpenCV,43.5344

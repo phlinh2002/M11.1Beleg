@@ -22,9 +22,6 @@ __kernel void rgb_to_grayscale(__global const uchar* inputImage,
 )";
 
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray) {
-    printf("-----Graustufen - OpenCL-----\n");
-    auto start = std::chrono::high_resolution_clock::now();
-
     cl_int err;
 
     // Plattform & Gerät auswählen
@@ -104,8 +101,5 @@ bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int w
     clReleaseCommandQueue(queue);
     clReleaseContext(context);
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "Laufzeit convertToGrayscale_OpenCL: " << duration.count() << " ms\n";
     return true;
 }

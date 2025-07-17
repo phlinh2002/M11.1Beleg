@@ -2,7 +2,6 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <iostream>
-#include <chrono>
 
 const char* brightnessKernel = R"(
 __kernel void adjust_brightness(__global const uchar* input,
@@ -24,8 +23,6 @@ __kernel void adjust_brightness(__global const uchar* input,
 )";
 
 bool adjustBrightness_OpenCL(const std::vector<uchar>& inputColor, std::vector<uchar>& outputGray, int beta) {
-    printf("-----Helligkeit - OpenCL-----\n");
-    auto start = std::chrono::high_resolution_clock::now();
     cl_int err;
 
     cl_platform_id platform;
@@ -101,9 +98,6 @@ bool adjustBrightness_OpenCL(const std::vector<uchar>& inputColor, std::vector<u
     clReleaseCommandQueue(queue);
     clReleaseContext(context);
 
-    auto ende = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> dauer = ende - start;
-    std::cout << "Laufzeit adjustBrightness_OpenCL: " << dauer.count() << " ms\n";
 
     return true;
 }

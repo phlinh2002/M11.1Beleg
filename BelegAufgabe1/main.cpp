@@ -1,6 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include "BenchmarkManager.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 
 //!!!!!Aufgaben einzelne ausführen wenn die Ausgaben des Threads/Workloads aktiviert
 
@@ -10,6 +15,7 @@ bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::ve
 void adjustBrightness_OpenMP(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,int beta);
 void convertToGrayscale_OpenCV(const cv::Mat& inputBGR, cv::Mat& outputGray);
 void adjustBrightness_OpenCV(const cv::Mat& inputImage, cv::Mat& outputImage, int beta);
+
 
 int main() {
     std::string outputFolder = "./images";
@@ -34,23 +40,22 @@ int main() {
             rgbData[idx] = pixel[2]; // R
             rgbData[idx + 1] = pixel[1]; // G
             rgbData[idx + 2] = pixel[0]; // B
-            
-
         }
     }
     cv::Mat imgRGB;
     cv::cvtColor(img, imgRGB, cv::COLOR_BGR2RGB);
 
-    
     // ===== Graustufen OpenMP =====
+    printf("-----Graustufen - OpenMP-----\n");
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
     cv::imshow("Grayscale OpenMP", matGrayOpenMP);
     //cv::imwrite(outputFolder + "/nature_grayscale_openmp.jpg", matGrayOpenMP);
     
-    /*
+    
     // ===== Graustufen OpenCL =====
+    printf("-----Graustufen - OpenCL-----\n");
     std::vector<unsigned char> grayOpenCL;
     if (!convertToGrayscale_OpenCL(rgbData, width, height, grayOpenCL)) {
         std::cerr << "Fehler bei OpenCL Graustufen-Konvertierung.\n";
@@ -61,23 +66,23 @@ int main() {
     //cv::imwrite(outputFolder + "/nature_grayscale_opencl.jpg", matGrayOpenCL);
     
     // ===== Graustufen OpenCV =====
+    printf("-----Graustufen - OpenCV-----\n");
     cv::Mat grayOpenCV;
     convertToGrayscale_OpenCV(imgRGB, grayOpenCV);
 	cv::imshow("Grayscale OpenCV", grayOpenCV);
     //cv::imwrite(outputFolder + "/nature_grayscale_opencv.jpg", grayOpenCV);
 
     
-    
     // ===== Helligkeit OpenMP =====
+    printf("-----Helligkeit - OpenMP-----\n");
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
     cv::Mat matBrightOpenMP(height, width, CV_8UC3, brightOpenMP.data());
 	cv::imshow("Brightness OpenMP", matBrightOpenMP);
     //cv::imwrite(outputFolder + "/nature_brightness_openmp.jpg", matBrightOpenMP);
     
-    
-    
     // ===== Helligkeit OpenCL =====
+    printf("-----Helligkeit - OpenCL-----\n");
     std::vector<unsigned char> brightOpenCL;
     if (!adjustBrightness_OpenCL(rgbData, brightOpenCL, beta)) {
         std::cerr << "Fehler bei OpenCL Helligkeitsanpassung.\n";
@@ -86,17 +91,22 @@ int main() {
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
 	cv::imshow("Brightness OpenCL", matBrightOpenCL);
     //cv::imwrite(outputFolder + "/nature_brightness_opencl.jpg", matBrightOpenCL);
-    
-    
 
 	// ===== Helligkeit OpenCV =====
+    printf("-----Helligkeit - OpenCV-----\n");
 	cv::Mat brightOpenCV;
 	adjustBrightness_OpenCV(imgRGB, brightOpenCV, beta);
 	cv::imshow("Brightness OpenCV", brightOpenCV);
 	//cv::imwrite(outputFolder + "/nature_brightness_opencv.jpg", brightOpenCV);
-	*/
-    
-
+	
+	// Benchmarking
+    /*
+	BenchmarkManager benchmarkManager("benchmark_results.csv");
+	benchmarkManager.benchmarkAll(rgbData, width, height, imgRGB, beta);
+    std::string csvPath = "benchmark_results.csv";
+	std::cout << "Benchmarking abgeschlossen. Ergebnisse in " << csvPath << " gespeichert.\n";
+    */
+	
     cv::waitKey(0);
     return 0;
 }
