@@ -6,20 +6,7 @@ void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int w
 	int totalPixels = width * height;
 	outputGray.resize(totalPixels);
 
-	#pragma omp parallel
-	{
-		int tid = omp_get_thread_num();
-		int nThreads = omp_get_num_threads();
-		/* Nur ein Thread gibt die Anzahl der verwendeten Threads aus
-
-		#pragma omp single
-		{
-			std::cout << "Anzahl der Threads: " << nThreads << std::endl;
-		}*/
-
-	}
-
-        // Jetzt die Pixel im Bereich verarbeiten
+     // Jetzt die Pixel im Bereich verarbeiten
 	#pragma omp parallel for
 		for(int i = 0; i < totalPixels; ++i) {
         

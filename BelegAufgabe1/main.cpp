@@ -7,8 +7,6 @@
 #include <vector>
 #include <string>
 
-//!!!!!Aufgaben einzelne ausführen wenn die Ausgaben des Threads/Workloads aktiviert
-
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 bool adjustBrightness_OpenCL(const std::vector<unsigned char>& inputRGB, std::vector<unsigned char>& outputGray,  int beta);
