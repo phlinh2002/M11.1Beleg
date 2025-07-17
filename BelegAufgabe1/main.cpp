@@ -42,7 +42,7 @@ int main() {
     }
     cv::Mat imgRGB;
     cv::cvtColor(img, imgRGB, cv::COLOR_BGR2RGB);
-
+    
     // ===== Graustufen OpenMP =====
     printf("-----Graustufen - OpenMP-----\n");
     std::vector<unsigned char> grayOpenMP;
@@ -96,9 +96,9 @@ int main() {
 	adjustBrightness_OpenCV(imgRGB, brightOpenCV, beta);
 	cv::imshow("Brightness OpenCV", brightOpenCV);
 	//cv::imwrite(outputFolder + "/nature_brightness_opencv.jpg", brightOpenCV);
-	
+    
 	// Benchmarking
-    /*
+ /*
 	BenchmarkManager benchmarkManager("benchmark_results.csv");
 	benchmarkManager.benchmarkAll(rgbData, width, height, imgRGB, beta);
     std::string csvPath = "benchmark_results.csv";
