@@ -2,7 +2,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
-//!!!!!Aufgaben einzelne ausführen wegen dem Ausgaben des Threads/Workloads
+//!!!!!Aufgaben einzelne ausführen wenn die Ausgaben des Threads/Workloads aktiviert
 
 bool convertToGrayscale_OpenCL(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
 void convertToGrayscale_OpenMP(const std::vector<unsigned char>& inputRGB, int width, int height, std::vector<unsigned char>& outputGray);
@@ -13,7 +13,7 @@ void adjustBrightness_OpenCV(const cv::Mat& inputImage, cv::Mat& outputImage, in
 
 int main() {
     std::string outputFolder = "./images";
-    std::string imagePath = "\images\\4.nature_mega.jpeg";
+    std::string imagePath = "\images\\1.kitten_small.jpg";
     cv::Mat img = cv::imread(imagePath);
     if (img.empty()) {
         std::cerr << "Fehler: Bild konnte nicht geladen werden.\n";
@@ -22,6 +22,7 @@ int main() {
 
     int width = img.cols;
     int height = img.rows;
+    int beta = 50;
 
     // RGB-Daten extrahieren
     std::vector<unsigned char> rgbData(width * height * 3);
@@ -40,14 +41,15 @@ int main() {
     cv::Mat imgRGB;
     cv::cvtColor(img, imgRGB, cv::COLOR_BGR2RGB);
 
-
+    
     // ===== Graustufen OpenMP =====
     std::vector<unsigned char> grayOpenMP;
     convertToGrayscale_OpenMP(rgbData, width, height, grayOpenMP);
     cv::Mat matGrayOpenMP(height, width, CV_8UC1, grayOpenMP.data());
-    cv::imwrite(outputFolder + "/nature_grayscale_openmp.jpg", matGrayOpenMP);
-
-
+    cv::imshow("Grayscale OpenMP", matGrayOpenMP);
+    //cv::imwrite(outputFolder + "/nature_grayscale_openmp.jpg", matGrayOpenMP);
+    
+    /*
     // ===== Graustufen OpenCL =====
     std::vector<unsigned char> grayOpenCL;
     if (!convertToGrayscale_OpenCL(rgbData, width, height, grayOpenCL)) {
@@ -55,20 +57,24 @@ int main() {
         return -1;
     }
     cv::Mat matGrayOpenCL(height, width, CV_8UC1, grayOpenCL.data());
-    cv::imwrite(outputFolder + "/nature_grayscale_opencl.jpg", matGrayOpenCL);
-
+	cv::imshow("Grayscale OpenCL", matGrayOpenCL);
+    //cv::imwrite(outputFolder + "/nature_grayscale_opencl.jpg", matGrayOpenCL);
+    
     // ===== Graustufen OpenCV =====
     cv::Mat grayOpenCV;
     convertToGrayscale_OpenCV(imgRGB, grayOpenCV);
-    cv::imwrite(outputFolder + "/nature_grayscale_opencv.jpg", grayOpenCV);
+	cv::imshow("Grayscale OpenCV", grayOpenCV);
+    //cv::imwrite(outputFolder + "/nature_grayscale_opencv.jpg", grayOpenCV);
 
-    int beta = 50;
+    
     
     // ===== Helligkeit OpenMP =====
     std::vector<unsigned char> brightOpenMP;
     adjustBrightness_OpenMP(rgbData, brightOpenMP, beta);
     cv::Mat matBrightOpenMP(height, width, CV_8UC3, brightOpenMP.data());
-    cv::imwrite(outputFolder + "/nature_brightness_openmp.jpg", matBrightOpenMP);
+	cv::imshow("Brightness OpenMP", matBrightOpenMP);
+    //cv::imwrite(outputFolder + "/nature_brightness_openmp.jpg", matBrightOpenMP);
+    
     
     
     // ===== Helligkeit OpenCL =====
@@ -78,14 +84,17 @@ int main() {
         return -1;
     }
     cv::Mat matBrightOpenCL(height, width, CV_8UC3, brightOpenCL.data());
-    cv::imwrite(outputFolder + "/nature_brightness_opencl.jpg", matBrightOpenCL);
+	cv::imshow("Brightness OpenCL", matBrightOpenCL);
+    //cv::imwrite(outputFolder + "/nature_brightness_opencl.jpg", matBrightOpenCL);
     
-
+    
 
 	// ===== Helligkeit OpenCV =====
 	cv::Mat brightOpenCV;
 	adjustBrightness_OpenCV(imgRGB, brightOpenCV, beta);
-	cv::imwrite(outputFolder + "/nature_brightness_opencv.jpg", brightOpenCV);
+	cv::imshow("Brightness OpenCV", brightOpenCV);
+	//cv::imwrite(outputFolder + "/nature_brightness_opencv.jpg", brightOpenCV);
+	*/
     
 
     cv::waitKey(0);
